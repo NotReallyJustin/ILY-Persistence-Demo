@@ -4,6 +4,7 @@
 # https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.form?view=windowsdesktop-9.0
 # Add-Type imports a .net framework object (basically for building Windows applications - PS1 is an automation tool built on top of .NET)
 # By default, Windows only imports up to System.[]
+
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
@@ -90,6 +91,15 @@ function Show-ILY {
         Show-ILY "Did you really think you could just close this?"
         $event.Cancel = $True
     })
+
+    # 💗 Prevent them from closing the form
+    # You can't cancel a "move" event. BUT: you could have it revert to its original position if you really didn't want to move 🤔
+    $form.Add_Move({
+        Show-ILY "I'm moved by the fact that you try to move that form`nBut no."
+    })
+
+    # 💗 Prevent them from minimizating the form
+    $form.MinimizeBox = $False;
 
     # Actually display the stuff
     $form.ShowDialog()
